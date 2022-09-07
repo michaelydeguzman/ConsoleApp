@@ -4,6 +4,7 @@ using FlareExam.Tasks.Interfaces;
 using FlareExam.Workers.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace FlareExam.Workers
@@ -21,7 +22,7 @@ namespace FlareExam.Workers
 
         public void Run()
         {
-            int selection = 0;
+            int selection;
 
             do
             {
@@ -45,7 +46,8 @@ namespace FlareExam.Workers
                                     AddRectangleToGrid();
                                     break;
                                 case 3:
-                                    FindRectangleViaPosition();
+                                    var rect = FindRectangleViaPosition();
+                                    ProcessRectangle(rect);
                                     break;
                                 case 4:
                                     RenderGrid();
@@ -61,11 +63,11 @@ namespace FlareExam.Workers
                         UnrecognizedOption();
                         break;
                 };
-
-                ShowGridDetails();
             }
             while (selection != 5);
         }
+
+
         private void DisplayMenu()
         {
             Console.WriteLine("Please choose an option below:");
@@ -84,38 +86,45 @@ namespace FlareExam.Workers
 
         private void ShowGridDetails()
         {
-            if (_gridWorker.Grid != null)
-            {
-                Console.WriteLine();
-                Console.WriteLine("Current grid details:");
-                Console.WriteLine($"Width: {_gridWorker.Grid.Width}");
-                Console.WriteLine($"Height: {_gridWorker.Grid.Height}");
-                Console.WriteLine($"Total # of Rectangles: {_rectangleWorker.Rectangles.Count}");
-                Console.WriteLine();
-            }
+            Console.WriteLine();
+            Console.WriteLine("Current grid details:");
+            Console.WriteLine($"Width: {_gridWorker.Grid.Width}");
+            Console.WriteLine($"Height: {_gridWorker.Grid.Height}");
+            Console.WriteLine($"Total # of Rectangles: {_rectangleWorker.Rectangles.Count}");
+            Console.WriteLine();
         }
 
-        private void GetGridWidth()
+        private int GetGridWidth()
         {
-            _gridWorker.SetGridWidth(InputValidationHelper.GetValidIntegerInput("Please specify new Grid Width: ", 5, 25));
+            var width = InputValidationHelper.GetValidIntegerInput("Please specify new Grid Width: ", 5, 25);
+            _gridWorker.SetGridWidth(width);
+
+            return width;
         }
 
-        private void GetGridHeight()
+        private int GetGridHeight()
         {
-            _gridWorker.SetGridHeight(InputValidationHelper.GetValidIntegerInput("Please specify new Grid Height: ", 5, 25));
+            var height = InputValidationHelper.GetValidIntegerInput("Please specify new Grid Height: ", 5, 25);
+            _gridWorker.SetGridHeight(height);
+
+            return height;
         }
 
         private void CreateGrid()
         {
             _gridWorker.InitializeGrid();
+            var width = GetGridWidth();
+            var height = GetGridHeight();
 
-            GetGridWidth();
-            GetGridHeight();
+            Console.WriteLine();
+            Console.WriteLine($"Grid created with width {width} & height {height}.");
+            PressAnyKeyToContinue();
         }
 
         private void RenderGrid()
         {
             _gridWorker.RenderGrid(_rectangleWorker.Rectangles);
+            ShowGridDetails();
         }
 
         private void AddRectangleToGrid()
@@ -125,7 +134,7 @@ namespace FlareExam.Workers
             Console.WriteLine();
             Console.Write("Please specify a Rectangle name: ");
             var name = Console.ReadLine();
-  
+
             var coordinatesList = new List<string>();
 
             do
@@ -140,7 +149,7 @@ namespace FlareExam.Workers
                 {
                     Console.WriteLine("ERR: Cannot have duplicate coordinates.");
                 }
-              
+
             }
 
             while (coordinate != "ok");
@@ -153,17 +162,20 @@ namespace FlareExam.Workers
             PressAnyKeyToContinue();
         }
 
-        private void FindRectangleViaPosition()
+        private Models.Rectangle FindRectangleViaPosition()
         {
             var position = InputValidationHelper.GetValidInputStringCoordinate(false);
 
-            var rectangle = _rectangleWorker.FindRectangle(position);
+            return _rectangleWorker.FindRectangle(position);
+        }
 
+        private void ProcessRectangle(Models.Rectangle rectangle)
+        {
             if (rectangle != null)
             {
                 Console.WriteLine($"Rectangle \"{rectangle.Name}\" found.");
                 Console.WriteLine();
-                var rectToRender = new List<Rectangle> { rectangle };
+                var rectToRender = new List<Models.Rectangle> { rectangle };
                 _gridWorker.RenderGrid(rectToRender);
 
                 Console.WriteLine();
@@ -195,7 +207,6 @@ namespace FlareExam.Workers
 
         private void UnrecognizedOption()
         {
-            Console.WriteLine();
             Console.WriteLine("ERR: Unrecognized option entered.");
         }
 
