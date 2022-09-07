@@ -18,7 +18,7 @@ namespace FlareExam.Helpers
 
                 if (!isValid)
                 {
-                    Console.WriteLine("ERR: Please input an integer value.");
+                    Console.WriteLine("ERR: Input must be an integer value.");
                     Console.WriteLine();
                 }
             }
@@ -44,14 +44,14 @@ namespace FlareExam.Helpers
 
                     if (!isWithinRange)
                     {
-                        Console.WriteLine($"ERR: Please input an integer value between {min} & {max}.");
+                        Console.WriteLine($"ERR: Input must be an integer between {min} & {max}.");
                         Console.WriteLine();
                     }
                 }
                 else
                 { 
 
-                    Console.WriteLine("ERR: Please input an integer value.");
+                    Console.WriteLine("ERR: Input must be an integer value.");
                     Console.WriteLine();
                 }
             }
@@ -68,7 +68,7 @@ namespace FlareExam.Helpers
 
             do
             {
-                Console.Write("Please enter a coordinate in this format x,y (e.g 1,2). " + (recursive ? "Enter 'ok' to stop. " : string.Empty));
+                Console.Write("Please input a non-negative coordinate in this format x,y (e.g 1,2). " + (recursive ? "Enter 'ok' to stop. " : string.Empty));
                 inputValue = Console.ReadLine();
 
                 if (recursive && inputValue == "ok")
@@ -78,12 +78,12 @@ namespace FlareExam.Helpers
                 else
                 {
                     isValid = inputValue.Split(',').Length == 2 && int.TryParse(inputValue.Split(',')[0].ToString(), out int x)
-                        && int.TryParse(inputValue.Split(',')[1].ToString(), out int y);
+                        && int.TryParse(inputValue.Split(',')[1].ToString(), out int y) && x > 0 && y > 0;
                 }
 
                 if (!isValid)
                 {
-                    Console.WriteLine("ERR: Please input a valid coordinate in this format: x,y.");
+                    Console.WriteLine("ERR: Input must be a non-negative coordinate.");
                     Console.WriteLine();
                 }
             }

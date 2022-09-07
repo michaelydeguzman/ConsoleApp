@@ -18,6 +18,13 @@ namespace FlareExam.Workers
 
         public void AddRectangle(string name, string[] coordinates)
         {
+
+            //TODO Validations
+
+            // 1. Must be a valid rectangle
+            // 2. Must be within grid
+            // 3. Must not overlap with other rectangles
+
             var newRectangle = new Rectangle()
             {
                 Name = name,
