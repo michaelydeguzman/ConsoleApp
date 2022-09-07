@@ -27,6 +27,7 @@ namespace FlareExam.Tasks.Interfaces
 
         public void RenderGrid(List<Rectangle> rectangles)
         {
+            Console.WriteLine();
             for (int i = 0; i < Grid.Height; i++)
             {
                 for (int j = 0; j < Grid.Width; j++)

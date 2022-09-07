@@ -27,14 +27,13 @@ namespace FlareExam.Workers
             Rectangles.Add(newRectangle);
         }
 
-        public Rectangle FindRectangle(List<int> position)
+        public Rectangle FindRectangle(string position)
         {
             foreach(var rectangle in Rectangles)
             {
                 foreach(var coordinate in rectangle.Coordinates)
                 {
-                    var pos = string.Join(',', position);
-                    if (coordinate.Contains(pos))
+                    if (coordinate.Contains(position))
                     {
                         return rectangle;
                     }

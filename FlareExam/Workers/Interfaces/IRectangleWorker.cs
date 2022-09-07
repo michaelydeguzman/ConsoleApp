@@ -11,7 +11,7 @@ namespace FlareExam.Tasks.Interfaces
 
         void AddRectangle(string name, string[] coordinates);
 
-        Rectangle FindRectangle(List<int> position);
+        Rectangle FindRectangle(string position);
 
         void RemoveRectangle(Rectangle rectangle);
     }
