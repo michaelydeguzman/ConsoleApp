@@ -4,7 +4,6 @@ using FlareExam.Tasks.Interfaces;
 using FlareExam.Workers.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace FlareExam.Workers
@@ -162,20 +161,20 @@ namespace FlareExam.Workers
             PressAnyKeyToContinue();
         }
 
-        private Models.Rectangle FindRectangleViaPosition()
+        private Rectangle FindRectangleViaPosition()
         {
             var position = InputValidationHelper.GetValidInputStringCoordinate(false);
 
             return _rectangleWorker.FindRectangle(position);
         }
 
-        private void ProcessRectangle(Models.Rectangle rectangle)
+        private void ProcessRectangle(Rectangle rectangle)
         {
             if (rectangle != null)
             {
                 Console.WriteLine($"Rectangle \"{rectangle.Name}\" found.");
                 Console.WriteLine();
-                var rectToRender = new List<Models.Rectangle> { rectangle };
+                var rectToRender = new List<Rectangle> { rectangle };
                 _gridWorker.RenderGrid(rectToRender);
 
                 Console.WriteLine();
