@@ -10,6 +10,7 @@ namespace FlareExam.Tasks.Interfaces
         Grid Grid { get; set; }
 
         void InitializeGrid();
+
         void SetGridWidth(int width);
 
         void SetGridHeight(int height);

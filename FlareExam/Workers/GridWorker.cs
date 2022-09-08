@@ -25,23 +25,6 @@ namespace FlareExam.Tasks.Interfaces
             Grid.Height = height;
         }
 
-        private List<string> GetGridCoordinates()
-        {
-            List<string> gridCoordinates = new List<string>();
-
-            for (int y = 0; y < Grid.Height; y++)
-            {
-                for (int x = 0; x < Grid.Width; x++)
-                {
-                    string coordinate = string.Join(',', new int[] { x, y });
-
-                    gridCoordinates.Add(coordinate);
-                }
-            }
-
-            return gridCoordinates;
-        }
-
         public bool IsRectangleInsideGrid(Rectangle rectangle)
         {
             foreach (var coordinate in rectangle.Coordinates)
