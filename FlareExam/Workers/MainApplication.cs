@@ -211,7 +211,7 @@ namespace FlareExam.Workers
                 Console.WriteLine();
                 Console.Write("Do you want to remove the rectangle (Y/N)? ");
 
-                if (Console.ReadLine() == "Y")
+                if (Console.ReadLine().ToUpper() == "Y")
                 {
                     _rectangleWorker.RemoveRectangle(rectangle);
 
