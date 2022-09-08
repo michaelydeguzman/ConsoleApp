@@ -14,6 +14,8 @@ namespace FlareExam.Tasks.Interfaces
 
         void SetGridHeight(int height);
 
+        bool IsRectangleInsideGrid(Rectangle rectangle);
+
         void RenderGrid(List<Rectangle> rectangles);
     }
 }

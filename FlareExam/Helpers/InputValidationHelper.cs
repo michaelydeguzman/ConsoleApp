@@ -78,7 +78,7 @@ namespace FlareExam.Helpers
                 else
                 {
                     isValid = inputValue.Split(',').Length == 2 && int.TryParse(inputValue.Split(',')[0].ToString(), out int x)
-                        && int.TryParse(inputValue.Split(',')[1].ToString(), out int y) && x > 0 && y > 0;
+                        && int.TryParse(inputValue.Split(',')[1].ToString(), out int y) && x >= 0 && y >= 0;
                 }
 
                 if (!isValid)

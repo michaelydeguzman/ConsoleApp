@@ -4,6 +4,7 @@ using FlareExam.Tasks.Interfaces;
 using FlareExam.Workers.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FlareExam.Workers
@@ -112,11 +113,24 @@ namespace FlareExam.Workers
         private void CreateGrid()
         {
             _gridWorker.InitializeGrid();
+
             var width = GetGridWidth();
             var height = GetGridHeight();
 
             Console.WriteLine();
             Console.WriteLine($"Grid created with width {width} & height {height}.");
+
+            if (_rectangleWorker.Rectangles.Count > 0)
+            {
+                foreach (var rectangle in _rectangleWorker.Rectangles.ToList())
+                {
+                    if (!_gridWorker.IsRectangleInsideGrid(rectangle))
+                    {
+                        _rectangleWorker.RemoveRectangle(rectangle);
+                    }
+                }
+            }
+
             PressAnyKeyToContinue();
         }
 
@@ -140,23 +154,39 @@ namespace FlareExam.Workers
             {
                 coordinate = InputValidationHelper.GetValidInputStringCoordinate();
 
-                if (!coordinatesList.Contains(coordinate))
+                if (coordinate != "ok")
                 {
-                    coordinatesList.Add(coordinate);
+                    if (!coordinatesList.Contains(coordinate))
+                    {
+                        coordinatesList.Add(coordinate);
+                    }
+                    else
+                    {
+                        Console.WriteLine("ERR: Cannot have duplicate coordinates.");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("ERR: Cannot have duplicate coordinates.");
-                }
-
             }
 
             while (coordinate != "ok");
 
-            _rectangleWorker.AddRectangle(name, coordinatesList.ToArray());
+            var newRectangle = new Rectangle()
+            {
+                Name = name,
+                Coordinates = coordinatesList.ToArray()
+            };
 
             Console.WriteLine();
-            Console.WriteLine($"Rectangle \"{name}\" added successfully.");
+
+            if (_rectangleWorker.IsValidRectangle(newRectangle) && _gridWorker.IsRectangleInsideGrid(newRectangle))
+            {
+                _rectangleWorker.AddRectangle(newRectangle);
+
+                Console.WriteLine($"Rectangle \"{name}\" added successfully.");
+            }
+            else
+            {
+                Console.WriteLine("ERR: Invalid Rectangle.");
+            }
 
             PressAnyKeyToContinue();
         }
@@ -165,7 +195,7 @@ namespace FlareExam.Workers
         {
             var position = InputValidationHelper.GetValidInputStringCoordinate(false);
 
-            return _rectangleWorker.FindRectangle(position);
+            return _rectangleWorker.FindRectangleViaCoordinate(position);
         }
 
         private void ProcessRectangle(Rectangle rectangle)
@@ -173,7 +203,6 @@ namespace FlareExam.Workers
             if (rectangle != null)
             {
                 Console.WriteLine($"Rectangle \"{rectangle.Name}\" found.");
-                Console.WriteLine();
                 var rectToRender = new List<Rectangle> { rectangle };
                 _gridWorker.RenderGrid(rectToRender);
 

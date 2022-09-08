@@ -9,10 +9,12 @@ namespace FlareExam.Tasks.Interfaces
     {
         List<Rectangle> Rectangles { get; set; }
 
-        void AddRectangle(string name, string[] coordinates);
+        Rectangle FindRectangleViaCoordinate(string position);
 
-        Rectangle FindRectangle(string position);
+        void AddRectangle(Rectangle rectangle);
 
         void RemoveRectangle(Rectangle rectangle);
+
+        bool IsValidRectangle(Rectangle rectangle);
     }
 }
