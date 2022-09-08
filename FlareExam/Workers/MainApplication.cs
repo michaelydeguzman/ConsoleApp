@@ -59,6 +59,8 @@ namespace FlareExam.Workers
                             UnrecognizedOption();
                         }
                         break;
+                    case 5:
+                        break;
                     default:
                         UnrecognizedOption();
                         break;
